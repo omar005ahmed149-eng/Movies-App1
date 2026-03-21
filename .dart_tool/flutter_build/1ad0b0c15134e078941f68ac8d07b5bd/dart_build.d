@@ -1,0 +1,1 @@
+ D:\\course\\MoviesApp\\.dart_tool\\flutter_build\\1ad0b0c15134e078941f68ac8d07b5bd\\dart_build_result.json:  D:\\course\\MoviesApp\\.dart_tool\\package_config.json D:\\course\\MoviesApp\\pubspec.yaml E:\\flutter_windows_3.38.3-stable\\flutter\\bin\\cache\\dart-sdk\\version d:\\course\\moviesapp\\.dart_tool\\package_config.json

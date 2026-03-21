@@ -1,0 +1,1 @@
+ D:\\course\\movies4APP\\.dart_tool\\flutter_build\\14f0c89493ab7b418d0fc7ad9da68c11\\native_assets.json: 
