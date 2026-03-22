@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   final prefs = await SharedPreferences.getInstance();
-  final OnBoarding = prefs.getBool('seenOnboarding') ?? false;
+  final OnBoarding = prefs.getBool('seenOnBoarding') ?? false;
 
   if(FirebaseAuth.instance.currentUser!=null){
     UserModel.currentUser= await FirebaseService.getUSerFromFIreStore(FirebaseAuth.instance.currentUser!.uid);

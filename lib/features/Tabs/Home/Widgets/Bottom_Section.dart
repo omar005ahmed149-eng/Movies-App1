@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+
+import 'Category_card.dart';
+import 'Movie_Model.dart';
+
+class BottomSection extends StatelessWidget {
+  const BottomSection({super.key, required this.label, required this.movies});
+
+  final String label;
+  final List<MovieModel> movies;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 28),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const Text(
+                  'See More →',
+                  style: TextStyle(
+                    color: Color(0xFFF5C518),
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 12),
+
+          // Horizontal scroll
+          SizedBox(
+            height: 200,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              itemCount: movies.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (context, index) {
+                return CategoryCard(dominantColor: movies[index].dominantColor, rating: movies[index].rating, poster_image: movies[index].poster_image);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
