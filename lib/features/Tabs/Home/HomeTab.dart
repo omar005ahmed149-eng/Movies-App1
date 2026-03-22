@@ -44,13 +44,13 @@ class _HomeTabView extends StatelessWidget {
           backgroundColor: ColorsManger.black,
           body: Stack(
             children: [
-              // ── Blurred background ────────────────────────────────────
+
               BlurredBackground(
                 prevAsset: state.prevBg,
                 currentAsset: state.currentBg,
               ),
 
-              // ── Dark gradient overlay ─────────────────────────────────
+
               Container(
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
@@ -67,7 +67,6 @@ class _HomeTabView extends StatelessWidget {
                 ),
               ),
 
-              // ── Scrollable content ────────────────────────────────────
               CustomScrollView(
                 slivers: [
                   SliverToBoxAdapter(

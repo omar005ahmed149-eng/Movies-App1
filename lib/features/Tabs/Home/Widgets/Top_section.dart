@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies/core/resources/colors_manger.dart';
 
 import '../../../../core/resources/assets_manger.dart';
 import '../bloc/home_bloc.dart';
@@ -27,7 +28,6 @@ class TopSection extends StatelessWidget {
 
         SizedBox(height: 16.h),
 
-        // Hero carousel
         SizedBox(
           height: 360.h,
           child: PageView.builder(
@@ -45,34 +45,11 @@ class TopSection extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 14.h),
-
-        // Dot indicators
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(featuredMovies.length, (i) {
-            final isActive = i == activeIndex;
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 350),
-              curve: Curves.easeInOut,
-              margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: isActive ? 20 : 6,
-              height: 6,
-              decoration: BoxDecoration(
-                color: isActive ? const Color(0xFFF5C518) : Colors.white30,
-                borderRadius: BorderRadius.circular(4),
-              ),
-            );
-          }),
-        ),
-
-        SizedBox(height: 28.h),
       ],
     );
   }
 }
 
-// ─── Hero Card ────────────────────────────────────────────────────────────────
 
 class HeroCard extends StatelessWidget {
   final MovieModel movie;
@@ -93,11 +70,14 @@ class HeroCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(
-                movie.poster_image,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    ColoredBox(color: movie.dominantColor),
+              Container(
+                color: ColorsManger.white,
+                child: Image.asset(
+                  movie.poster_image,
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, __, ___) =>
+                      ColoredBox(color: movie.dominantColor),
+                ),
               ),
               if (isActive)
                 Positioned(

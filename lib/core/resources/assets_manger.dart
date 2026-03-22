@@ -21,8 +21,8 @@ abstract class AssetsManger {
   static const String watch = "${_base}Watch.png";
   static const String Poster_1917 = "${_base}1917_Poster.jpg";
   static const String Baby_Driver = "${_base}Baby_Driver.jpg";
-  static const String Dark_Knight = "${_base}Dark_Knight.jpg.jpg";
-  static const String Black_Widow = "${_base}Black_Widow.png";
+  static const String Dark_Knight = "${_base}Dark_Knight.jpg";
+  static const String Black_Widow = "${_base}Black_Widow.jpg";
   static const String Captain_America = "${_base}Captain_America.jpg";
 }
 
