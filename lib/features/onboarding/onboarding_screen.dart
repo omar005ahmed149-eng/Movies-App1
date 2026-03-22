@@ -1,0 +1,175 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movies/core/resources/colors_manger.dart';
+import 'package:movies/features/auth/register/registerScreen.dart';
+import '../../../services/local_storage.dart';
+import '../../core/resources/assets_manger.dart';
+import 'onboarding_item.dart';
+import 'onboarding_model.dart';
+
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({super.key});
+
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final PageController controller =.new();
+  int currentIndex = 0;
+
+  final List<OnBoardingModel> pages = [
+    OnBoardingModel(
+      title: "Find Your Next Favorite Movie Here",
+      subtitle: "Get access to a huge library of movies to suit all tastes. You will surely like it.",
+      image: AssetsManger.poster1,
+    ),
+    OnBoardingModel(
+      title: "Discover Movies",
+      subtitle: "Explore a vast collection of movies in all qualities and genres. Find your next favorite film with ease.",
+      image: AssetsManger.poster2,
+    ),
+    OnBoardingModel(
+      title: "Explore All Genres",
+      subtitle: "Discover movies from every genre, in all available qualities. Find something new and exciting to watch every day.",
+      image: AssetsManger.poster3,
+    ),
+    OnBoardingModel(
+      title: "Create Watchlists",
+      subtitle: "Save movies to your watchlist to keep track of what you want to watch next. Enjoy films in various qualities and genres.",
+      image: AssetsManger.poster4,
+    ),
+    OnBoardingModel(
+      title: "Rate, Review and Learn",
+      subtitle: "Share your thoughts on the movies you've watched. Dive deep into film details and help others discover great movies with your reviews.",
+      image: AssetsManger.poster5,
+    ),
+    OnBoardingModel(
+      title: "Start Watching Now",
+      image: AssetsManger.poster6,
+    ),
+  ];
+
+  void next() async {
+    if (currentIndex == pages.length - 1) {
+      await LocalStorage.setSeenOnBoarding();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const Registerscreen()),
+      );
+    } else {
+      controller.nextPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void back() {
+    if (currentIndex > 0) {
+      controller.previousPage(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: PageView.builder(
+        controller: controller,
+        itemCount: pages.length,
+        onPageChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
+        itemBuilder: (_, index) {
+          if (index == 0) {
+            return Stack(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Image.asset(pages[index].image, fit: BoxFit.cover),
+                ),
+
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [Colors.black, Colors.transparent],
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  bottom: 40,
+                  left: 24,
+                  right: 24,
+                  top: 400.h,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        pages[index].title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 36.sp,
+                          fontWeight: FontWeight.bold,
+                          color: ColorsManger.white,
+                          fontStyle: GoogleFonts.inter().fontStyle,
+                        ),
+                      ),
+
+                      SizedBox(height: 12.h),
+
+                      Text(
+                        pages[index].subtitle??" ",
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.white70,
+                        ),
+                      ),
+
+                      SizedBox(height: 20.h),
+
+                      ElevatedButton(
+                        onPressed: next,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: ColorsManger.yellow,
+                          minimumSize: Size(double.infinity, 55.sp),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                        ),
+                        child: const Text(
+                          "Explore Now",
+                          style: TextStyle(color: ColorsManger.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return OnBoardingItem(
+            model: pages[index],
+            isLast: index == pages.length - 1,
+            onNext: next,
+            onBack: back,
+          );
+        },
+      ),
+    );
+  }
+}
