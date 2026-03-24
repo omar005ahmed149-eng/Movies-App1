@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movies/features/Tabs/Home/Widgets/Movies_Data.dart';
+import 'package:movies/core/models/Movies_Data.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';
@@ -13,7 +13,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(
       prevBg: state.currentBg,
       activeIndex: event.index,
-      currentBg: featuredMovies[event.index].poster_image,
+      currentBg:  MovieData.featuredMovies[event.index].poster_image,
     ));
   }
 }

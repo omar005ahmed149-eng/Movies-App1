@@ -48,10 +48,10 @@ abstract class RoutesManger {
         {
           return CupertinoPageRoute(builder: (context) => Hometab());
         }
-      case search:
+     /* case search:
         {
           return CupertinoPageRoute(builder: (context) => Searchtab());
-        }
+        }*/
       case browse:
         {
           return CupertinoPageRoute(builder: (context) => Browsetab());

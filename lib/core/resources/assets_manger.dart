@@ -24,13 +24,21 @@ abstract class AssetsManger {
   static const String Dark_Knight = "${_base}Dark_Knight.jpg";
   static const String Black_Widow = "${_base}Black_Widow.jpg";
   static const String Captain_America = "${_base}Captain_America.jpg";
+  static const String joker = "${_base}joker.jpg";
+  static const String iron_man3 = "${_base}iron_man_3.jpg";
+  static const String civil_war = "${_base}civil_war.jpg";
+  static const String dr_strange = "${_base}doctor_strange.jpg";
+  static const String avengers = "${_base}Avengers.jpg";
+  static const String wednesday = "${_base}wednesday.jpg";
+  static const String doctor_who = "${_base}doctor_who.jpg";
+  static const String godzilla = "${_base}godzilla.jpg";
 }
 
 abstract class SvgManger {
-  static const String _base = "assets/images/svg/";
-  static const String iconGoogle = "${_base}icon _google.svg";
-  static const String usa = "${_base}usa.svg";
-  static const String eg = "${_base}eg.svg";
+  static const String _base = "assets/images/";
+  static const String iconGoogle = "${_base}Logo-google-icon-PNG.png";
+  static const String usa = "${_base}united-states-of-america-flag-round-icon-16.png";
+  static const String eg = "${_base}egypt-flag-3d-round-icon-16.png";
 }
 
 abstract class IconsManager {

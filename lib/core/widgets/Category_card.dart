@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-
-import 'Rating_Badge.dart';
+import '../../features/Tabs/Home/Widgets/Rating_Badge.dart';
 
 class CategoryCard extends StatefulWidget {
-  const CategoryCard({
+   CategoryCard({
     super.key,
-    required this.dominantColor,
     required this.rating,
     required this.poster_image,
   });
-
-  final Color dominantColor;
   final String rating;
   final String poster_image;
 
@@ -39,8 +35,6 @@ class _CategoryCardState extends State<CategoryCard> {
                 Image.asset(
                   widget.poster_image,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      ColoredBox(color: widget.dominantColor),
                 ),
                 Positioned(
                   top: 10,

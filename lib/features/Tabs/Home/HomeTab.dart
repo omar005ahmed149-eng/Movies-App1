@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movies/core/resources/assets_manger.dart';
 import 'package:movies/core/resources/colors_manger.dart';
-import 'package:movies/features/Tabs/Home/Widgets/Movies_Data.dart';
+import 'package:movies/core/models/Movies_Data.dart';
 
 import 'bloc/home_bloc.dart';
 import 'Widgets/Bottom_Section.dart';
-import 'Widgets/Movie_Model.dart';
+import '../../../core/models/Movie_Model.dart';
 import 'Widgets/Top_section.dart';
 import 'Widgets/Blurred_Background.dart';
 
@@ -26,7 +26,7 @@ class _HomeTabView extends StatelessWidget {
   const _HomeTabView();
 
   List<Widget> _buildCategorySliders() {
-    return categories.entries.map((entry) {
+    return MovieData.categories.entries.map((entry) {
       return SliverToBoxAdapter(
         child: BottomSection(
           label: entry.key,
@@ -44,12 +44,6 @@ class _HomeTabView extends StatelessWidget {
           backgroundColor: ColorsManger.black,
           body: Stack(
             children: [
-
-              BlurredBackground(
-                prevAsset: state.prevBg,
-                currentAsset: state.currentBg,
-              ),
-
 
               Container(
                 decoration: const BoxDecoration(

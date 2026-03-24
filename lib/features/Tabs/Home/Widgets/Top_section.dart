@@ -5,8 +5,8 @@ import 'package:movies/core/resources/colors_manger.dart';
 
 import '../../../../core/resources/assets_manger.dart';
 import '../bloc/home_bloc.dart';
-import 'Movie_Model.dart';
-import 'Movies_Data.dart';
+import '../../../../core/models/Movie_Model.dart';
+import '../../../../core/models/Movies_Data.dart';
 import 'Rating_Badge.dart';
 
 class TopSection extends StatelessWidget {
@@ -32,13 +32,13 @@ class TopSection extends StatelessWidget {
           height: 360.h,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: featuredMovies.length,
+            itemCount: MovieData.featuredMovies.length,
             onPageChanged: (index) {
               context.read<HomeBloc>().add(HomePageChanged(index));
             },
             itemBuilder: (context, index) {
               return HeroCard(
-                movie: featuredMovies[index],
+                movie:MovieData.featuredMovies[index],
                 isActive: index == activeIndex,
               );
             },
@@ -75,35 +75,8 @@ class HeroCard extends StatelessWidget {
                 child: Image.asset(
                   movie.poster_image,
                   fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) =>
-                      ColoredBox(color: movie.dominantColor),
                 ),
               ),
-              if (isActive)
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(14, 40, 14, 14),
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.transparent, Color(0xCC000000)],
-                      ),
-                    ),
-                    child: Text(
-                      movie.tagline,
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 10,
-                        letterSpacing: 3,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
               Positioned(
                 top: 10,
                 left: 10,

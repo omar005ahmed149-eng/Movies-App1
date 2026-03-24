@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'Category_card.dart';
-import 'Movie_Model.dart';
+import '../../../../core/widgets/Category_card.dart';
+import '../../../../core/models/Movie_Model.dart';
 
 class BottomSection extends StatelessWidget {
   const BottomSection({super.key, required this.label, required this.movies});
@@ -16,7 +16,6 @@ class BottomSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
@@ -43,8 +42,6 @@ class BottomSection extends StatelessWidget {
           ),
 
           const SizedBox(height: 12),
-
-          // Horizontal scroll
           SizedBox(
             height: 200,
             child: ListView.separated(
@@ -53,7 +50,7 @@ class BottomSection extends StatelessWidget {
               itemCount: movies.length,
               separatorBuilder: (_, __) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
-                return CategoryCard(dominantColor: movies[index].dominantColor, rating: movies[index].rating, poster_image: movies[index].poster_image);
+                return CategoryCard( rating: movies[index].rating, poster_image: movies[index].poster_image);
               },
             ),
           ),
