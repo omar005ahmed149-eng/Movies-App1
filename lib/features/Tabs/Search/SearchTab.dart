@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/models/Movie_Model.dart';
 import 'package:movies/core/models/Movies_Data.dart';
+import 'package:movies/core/resources/assets_manger.dart';
+import 'package:movies/core/resources/colors_manger.dart';
 import 'package:movies/core/widgets/Category_card.dart';
 
 class Searchtab extends StatefulWidget {
@@ -13,13 +15,25 @@ class Searchtab extends StatefulWidget {
 
 class _SearchtabState extends State<Searchtab> {
   final _controller = TextEditingController();
+
+  List<MovieModel> filteredList = MovieData.featuredMovies;
+
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
 
-  List<MovieModel> filteredList = MovieData.featuredMovies;
+  void _movieSearch(String text) {
+    if (text.isEmpty) {
+      filteredList = List.from(MovieData.featuredMovies);
+    } else {
+      filteredList = MovieData.featuredMovies
+          .where((m) => m.title.toLowerCase().contains(text.toLowerCase()))
+          .toList();
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,16 +41,19 @@ class _SearchtabState extends State<Searchtab> {
       child: Column(
         children: [
           Padding(
-            padding:  EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
+            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 12.h),
             child: TextField(
               controller: _controller,
               autofocus: false,
               style: const TextStyle(color: Colors.white),
-              onChanged: (text) =>MovieSearch(text),
+              onChanged: _movieSearch,
               decoration: InputDecoration(
                 hintText: 'Search',
                 hintStyle: const TextStyle(color: Colors.grey),
-                prefixIcon: const Icon(Icons.search_rounded, color: Colors.grey),
+                prefixIcon: ImageIcon(
+                  AssetImage(IconsManager.search),
+                  color: ColorsManger.white,
+                ),
                 filled: true,
                 fillColor: const Color(0xFF1E1E1E),
                 contentPadding: const EdgeInsets.symmetric(vertical: 14),
@@ -49,40 +66,32 @@ class _SearchtabState extends State<Searchtab> {
           ),
 
           Expanded(
-
-            child:filteredList.isEmpty
+            child: filteredList.isEmpty
                 ? const _NoResults()
                 : GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.68,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              itemCount: filteredList.length,
-              itemBuilder: (_, index)
-              {
-                return CategoryCard(rating: filteredList[index].rating, poster_image:  filteredList[index].poster_image);
-              }
-              ,
-            ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.68,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemCount: filteredList.length,
+                    itemBuilder: (_, index) {
+                      return CategoryCard(
+                        rating: filteredList[index].rating,
+                        poster_image: filteredList[index].poster_image,
+                        movie: filteredList[index], // ← enables navigation
+                      );
+                    },
+                  ),
           ),
         ],
       ),
     );
   }
-void MovieSearch(String text){
-  if(text.isEmpty){
-    filteredList=List.from(MovieData.featuredMovies);
-  }
-  else{
-    filteredList=MovieData.featuredMovies.where((label)=>label.title.toLowerCase().contains(text.toLowerCase())).toList();
-  }
-  setState((){});
 }
-}
-
 
 class _NoResults extends StatelessWidget {
   const _NoResults();

@@ -1,68 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:movies/core/models/user_model.dart';
+import 'package:movies/core/resources/colors_manger.dart';
+import 'package:movies/features/Tabs/Profile/Widgets/top_section.dart';
+import 'package:movies/features/Tabs/Profile/Widgets/Bottom_Section.dart';
 
-import '../../../core/resources/colors_manger.dart';
-
-class Profiletab extends StatelessWidget {
+class Profiletab extends StatefulWidget {
   const Profiletab({super.key});
 
   @override
+  State<Profiletab> createState() => _ProfiletabState();
+}
+
+class _ProfiletabState extends State<Profiletab> {
+  int selectedTab = 0; // 0 = Watch List, 1 = History
+
+  @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Popcorn icon made with widgets
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              Container(
-                width: 90,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1A1A1A),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              const Icon(Icons.local_movies_rounded, size: 80, color: Color(0xFFFFC107)),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Text(
-            'Find your movie',
-            style: TextStyle(
-              color: Colors.white.withOpacity(0.5),
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+    return Scaffold(
+      backgroundColor: ColorsManger.black,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Top section owns avatar, stats, buttons, tab bar
+            // It calls onTabChanged so ProfileTab can pass selectedTab to BottomSection
+            TopSection(
+              selectedTab: selectedTab,
+              onTabChanged: (index) => setState(() => selectedTab = index),
             ),
-          ),
-        ],
+
+            // Divider
+            Container(
+              height: 1,
+              color: const Color(0xFF2A2A2A),
+            ),
+
+            // Bottom section renders the grid or empty state
+            Expanded(
+              child: BottomSection(selectedTab: selectedTab),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-class BookmarkScreen extends StatelessWidget {
-  const BookmarkScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Icon(Icons.bookmark_border_rounded, size: 64, color: Colors.grey),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Icon(Icons.person_outline_rounded, size: 64, color: Colors.grey),
-    );
-  }
-}
-
-
-

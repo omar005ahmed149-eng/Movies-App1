@@ -4,20 +4,34 @@ class UserModel {
   String email;
   static UserModel? currentUser;
   String phoneNumber;
-  UserModel({required this.id,required this.name,required this.email,required this.phoneNumber});
+  String poster;
 
-  UserModel.fromjson(Map<String, dynamic> json, String id) : this(
-    id: id,
-    name: json["name"],
-    email: json["email"],
-    phoneNumber: json["phoneNumber"],
-  );
-  Map<String,dynamic> tojson(){
-    return{
-      "id":id,
-      "name":name,
-      "email":email,
-      "phoneNumber":phoneNumber,
+  UserModel({
+    required this.poster,
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+  });
+
+  UserModel.fromjson(Map<String, dynamic> json, String id)
+      : this(
+          id: id,
+          name: json["name"] ?? "",
+          email: json["email"] ?? "",
+          phoneNumber: json["phoneNumber"] ?? "",
+          // FIX: load poster from Firestore
+          poster: json["poster"] ?? "",
+        );
+
+  Map<String, dynamic> tojson() {
+    return {
+      "id": id,
+      "name": name,
+      "email": email,
+      "phoneNumber": phoneNumber,
+      // FIX: poster was missing from tojson — now it saves to Firestore
+      "poster": poster,
     };
   }
 }

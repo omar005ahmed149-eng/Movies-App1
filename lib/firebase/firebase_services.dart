@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movies/core/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class  FirebaseService {
+class FirebaseService {
   static Future<UserCredential> register({
     required String email,
     required String password,
@@ -28,26 +28,42 @@ class  FirebaseService {
       print(e.message);
     }
   }
-    static Future<void>addUserToFireStore(UserModel user){
-      CollectionReference<UserModel> usersCollection =getUsersCollection();
-      DocumentReference<UserModel> usersDocument = usersCollection.doc(user.id);
-      return usersDocument.set(user);
-    }
 
-  static Future<UserModel> getUSerFromFIreStore(String uid) async {
+  static Future<void> addUserToFireStore(UserModel user) {
     CollectionReference<UserModel> usersCollection = getUsersCollection();
-    DocumentReference<UserModel> usersDocument = usersCollection.doc(uid);
-    DocumentSnapshot<UserModel> documentSnapshot = await usersDocument.get();
-    UserModel user = documentSnapshot.data()!;
-    return user;
+    DocumentReference<UserModel> usersDocument =
+        usersCollection.doc(user.id);
+    return usersDocument.set(user);
+  }
+
+  /// Returns the user from Firestore, or null if the document doesn't exist.
+  /// Never throws a null crash.
+  static Future<UserModel?> getUSerFromFIreStore(String uid) async {
+    try {
+      CollectionReference<UserModel> usersCollection = getUsersCollection();
+      DocumentReference<UserModel> usersDocument =
+          usersCollection.doc(uid);
+      DocumentSnapshot<UserModel> documentSnapshot =
+          await usersDocument.get();
+
+      // FIX: check exists before calling .data()
+      if (!documentSnapshot.exists || documentSnapshot.data() == null) {
+        return null;
+      }
+
+      return documentSnapshot.data();
+    } catch (e) {
+      print('getUSerFromFIreStore error: $e');
+      return null;
+    }
   }
 
   static CollectionReference<UserModel> getUsersCollection() {
     FirebaseFirestore db = FirebaseFirestore.instance;
     return db.collection("Users").withConverter<UserModel>(
-      fromFirestore: (snapshot, _) => UserModel.fromjson(snapshot.data()!, snapshot.id),
+      fromFirestore: (snapshot, _) =>
+          UserModel.fromjson(snapshot.data()!, snapshot.id),
       toFirestore: (user, _) => user.tojson(),
     );
   }
-
 }

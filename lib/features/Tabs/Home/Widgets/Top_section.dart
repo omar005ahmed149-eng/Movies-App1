@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/resources/colors_manger.dart';
+import 'package:movies/features/movie_details/movie_details_screen.dart';
 
 import '../../../../core/resources/assets_manger.dart';
 import '../bloc/home_bloc.dart';
@@ -38,18 +39,16 @@ class TopSection extends StatelessWidget {
             },
             itemBuilder: (context, index) {
               return HeroCard(
-                movie:MovieData.featuredMovies[index],
+                movie: MovieData.featuredMovies[index],
                 isActive: index == activeIndex,
               );
             },
           ),
         ),
-
       ],
     );
   }
 }
-
 
 class HeroCard extends StatelessWidget {
   final MovieModel movie;
@@ -59,30 +58,38 @@ class HeroCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedScale(
-      scale: isActive ? 1.0 : 0.88,
-      duration: const Duration(milliseconds: 400),
-      curve: Curves.easeOutBack,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(22),
-          child: Stack(
-            fit: StackFit.expand,
-            children: [
-              Container(
-                color: ColorsManger.white,
-                child: Image.asset(
-                  movie.poster_image,
-                  fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => MovieDetailsScreen(movie: movie),
+        ),
+      ),
+      child: AnimatedScale(
+        scale: isActive ? 1.0 : 0.88,
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutBack,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(22),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Container(
+                  color: ColorsManger.white,
+                  child: Image.asset(
+                    movie.poster_image,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: RatingBadge(rating: movie.rating),
-              ),
-            ],
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: RatingBadge(rating: movie.rating),
+                ),
+              ],
+            ),
           ),
         ),
       ),

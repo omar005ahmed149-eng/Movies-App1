@@ -3,42 +3,63 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/resources/colors_manger.dart';
 import 'package:movies/core/resources/text_style.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class CustomTextFormField extends StatefulWidget {
   CustomTextFormField({
     super.key,
     required this.iconName,
     required this.prefixIcon,
     this.sufffixIcon,
     this.controller,
-    this.validator,  this.maxLength,this.keyboardType
+    this.validator,
+    this.maxLength,
+    this.keyboardType,
   });
   final String iconName;
-  IconData prefixIcon;
-  IconData? sufffixIcon;
+  final IconData prefixIcon;
+  final IconData? sufffixIcon;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
-  TextInputType?  keyboardType;
- dynamic maxLength;
+  final TextInputType? keyboardType;
+  final dynamic maxLength;
+
+  @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  bool _obscure = true;
 
   @override
   Widget build(BuildContext context) {
+    final isPasswordField = widget.sufffixIcon != null;
     return TextFormField(
       style: TextStyle(color: ColorsManger.white),
-      controller: controller,
-      validator: validator,
+      controller: widget.controller,
+      validator: widget.validator,
+      obscureText: isPasswordField ? _obscure : false,
       decoration: InputDecoration(
         filled: true,
         fillColor: ColorsManger.darkGray,
         label: Text(
-          iconName,
+          widget.iconName,
           style: AppTextStyles.buttonName(15.sp, ColorsManger.white),
         ),
 
-        prefixIcon: Icon(prefixIcon, color: ColorsManger.white),
-        suffixIcon: Icon(sufffixIcon, color: ColorsManger.white),
+        prefixIcon: Icon(widget.prefixIcon, color: ColorsManger.white),
+        suffixIcon: isPasswordField
+            ? IconButton(
+                onPressed: () => setState(() => _obscure = !_obscure),
+                icon: Icon(
+                  _obscure ? Icons.visibility_off : Icons.visibility,
+                  color: ColorsManger.white,
+                ),
+              )
+            : (widget.sufffixIcon != null
+                ? Icon(widget.sufffixIcon, color: ColorsManger.white)
+                : null),
       ),
-      keyboardType: keyboardType,
-      maxLength: maxLength,
+      keyboardType: widget.keyboardType,
+      maxLength: widget.maxLength,
     );
   }
 }

@@ -11,9 +11,8 @@ class Browsetab extends StatefulWidget {
   State<Browsetab> createState() => _BrowsetabState();
 }
 
-int _selectedIndex = 0;
-
 class _BrowsetabState extends State<Browsetab> {
+int _selectedIndex = 0;
 
  @override
   Widget build(BuildContext context) {
@@ -24,6 +23,8 @@ class _BrowsetabState extends State<Browsetab> {
               DefaultTabController(
                 length:MovieData.categories.length ,
                 child: TabBar(
+                  padding: EdgeInsets.zero,
+                  tabAlignment: TabAlignment.start,
                   isScrollable: true,
                   dividerColor: Colors.transparent,
                   indicatorColor: Colors.transparent,

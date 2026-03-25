@@ -32,6 +32,7 @@ abstract class AssetsManger {
   static const String wednesday = "${_base}wednesday.jpg";
   static const String doctor_who = "${_base}doctor_who.jpg";
   static const String godzilla = "${_base}godzilla.jpg";
+  static const String popcorn = "${_base}PopCorn.png";
 }
 
 abstract class SvgManger {

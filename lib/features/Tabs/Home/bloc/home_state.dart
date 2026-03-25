@@ -4,6 +4,9 @@ class HomeState {
   final int activeIndex;
   final String currentBg;
 
+  String get currentBackgroundUrl =>
+      MovieData.featuredMovies[activeIndex].poster_image;
+
   const HomeState({
     required this.activeIndex,
     required this.currentBg,

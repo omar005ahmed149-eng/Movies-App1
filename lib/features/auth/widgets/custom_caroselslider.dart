@@ -4,6 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movies/core/resources/assets_manger.dart';
 
 class CustomCarouselslider extends StatelessWidget {
+  final Function(String) onImageSelected;
+
+  CustomCarouselslider({required this.onImageSelected});
+
   final List<String> images = [
     AssetsManger.avatarOne,
     AssetsManger.avatarTwo,
@@ -23,12 +27,16 @@ class CustomCarouselslider extends StatelessWidget {
         height: 120.h,
         enlargeCenterPage: true,
         viewportFraction: 0.4,
-        enableInfiniteScroll: true,
       ),
       items: images.map((imagePath) {
-        return CircleAvatar(
-          radius: 60.r,
-          backgroundImage: AssetImage(imagePath),
+        return GestureDetector(
+          onTap: () {
+            onImageSelected(imagePath);
+          },
+          child: CircleAvatar(
+            radius: 60.r,
+            backgroundImage: AssetImage(imagePath),
+          ),
         );
       }).toList(),
     );

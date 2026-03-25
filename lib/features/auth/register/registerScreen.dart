@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movies/core/bloc/auth/auth_cubit.dart';
 import 'package:movies/core/models/user_model.dart';
 import 'package:movies/core/resources/colors_manger.dart';
 import 'package:movies/core/resources/text_style.dart';
@@ -12,7 +14,6 @@ import 'package:movies/core/widgets/validators.dart';
 import 'package:movies/features/auth/widgets/custom_caroselslider.dart';
 import 'package:movies/features/auth/widgets/custom_navigator_button.dart';
 import 'package:movies/features/auth/widgets/switch_toggle.dart';
-import 'package:movies/firebase/firebase_services.dart';
 
 class Registerscreen extends StatefulWidget {
   const Registerscreen({super.key});
@@ -33,7 +34,7 @@ class _RegisterscreenState extends State<Registerscreen> {
   final TextEditingController _phoneController = TextEditingController();
 
   final TextEditingController _nameController = TextEditingController();
-
+  String selectedAvatar = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +47,11 @@ class _RegisterscreenState extends State<Registerscreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CustomCarouselslider(),
+                CustomCarouselslider(
+                  onImageSelected: (image){
+                    selectedAvatar=image;
+                  },
+                ),
                 SizedBox(height: 10.h),
                 Text(
                   "Avatar",
@@ -142,12 +147,16 @@ class _RegisterscreenState extends State<Registerscreen> {
     if (_formKey.currentState!.validate() == false) return;
     try {
       UiUtils.showLoading(context, isDismiss: false);
-      UserCredential userCredential = await FirebaseService.register(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      FirebaseService.addUserToFireStore(UserModel(id: userCredential.user!.uid
-          , name: _nameController.text, email:_emailController.text,phoneNumber: _phoneController.text));
+      await context.read<AuthCubit>().register(
+            UserModel(
+              id: '',
+              name: _nameController.text,
+              email: _emailController.text,
+              phoneNumber: _phoneController.text,
+              poster: selectedAvatar,
+            ),
+            _passwordController.text,
+          );
       UiUtils.hideDialog(context);
       UiUtils.showMessage(
         message: "User Created Successfully",

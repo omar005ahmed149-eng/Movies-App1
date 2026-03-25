@@ -22,9 +22,17 @@ class Hometab extends StatelessWidget {
   }
 }
 
-class _HomeTabView extends StatelessWidget {
+class _HomeTabView extends StatefulWidget {
   const _HomeTabView();
 
+  @override
+  State<_HomeTabView> createState() => _HomeTabViewState();
+}
+
+class _HomeTabViewState extends State<_HomeTabView> with SingleTickerProviderStateMixin{
+  late final AnimationController animController;
+  late final Animation<double> fadeAnimation;
+  String prevUrl = MovieData.featuredMovies[0].poster_image;
   List<Widget> _buildCategorySliders() {
     return MovieData.categories.entries.map((entry) {
       return SliverToBoxAdapter(
@@ -35,15 +43,47 @@ class _HomeTabView extends StatelessWidget {
       );
     }).toList();
   }
+  @override
+  void initState() {
+    super.initState();
+    animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
+    fadeAnimation = CurvedAnimation(
+      parent: animController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    animController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(
+    return BlocConsumer<HomeBloc, HomeState>(
+      listener: (context, state) {
+        prevUrl = prevUrl;
+        animController.forward(from: 0);
+        setState(() {
+          animController.forward(from: 0).then((_) {
+            setState(() {
+              prevUrl = state.currentBackgroundUrl;
+            });
+          });
+        });
+      },
       builder: (context, state) {
+        final currentUrl = state.currentBackgroundUrl;
         return Scaffold(
           backgroundColor: ColorsManger.black,
           body: Stack(
             children: [
+
+              BlurredBackground(prevUrl: prevUrl, currentUrl: currentUrl, animation: fadeAnimation),
 
               Container(
                 decoration: const BoxDecoration(

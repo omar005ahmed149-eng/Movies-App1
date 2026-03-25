@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:movies/core/models/user_model.dart';
+import 'package:movies/core/bloc/auth/auth_cubit.dart';
 import 'package:movies/core/resources/assets_manger.dart';
 import 'package:movies/core/resources/colors_manger.dart';
 import 'package:movies/core/resources/text_style.dart';
@@ -14,7 +15,6 @@ import 'package:movies/features/auth/widgets/custom_divider.dart';
 import 'package:movies/features/auth/widgets/custom_navigator_button.dart';
 import 'package:movies/features/auth/widgets/custom_textButton.dart';
 import 'package:movies/features/auth/widgets/switch_toggle.dart';
-import 'package:movies/firebase/firebase_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +26,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -47,7 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     iconName: "Email",
                     controller: _emailController,
                     validator: (value) {
-                      return AppValidators.validateEmail(_emailController.text);
+                      return AppValidators.validateEmail(
+                          _emailController.text);
                     },
                   ),
                   SizedBox(height: 22.h),
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 23.h),
                   CustomNavigatorButton(
-                    statementTitle: "Don’t Have Account ?",
+                    statementTitle: "Don't Have Account ?",
                     textButtonTitle: "Create one",
                     onTap: () {
                       Navigator.pushReplacementNamed(
@@ -113,7 +113,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     isIcon: true,
                     buttonPaddingHight: 15,
                     iconSpace: 3.w,
-                    style: AppTextStyles.buttonName(16.sp, ColorsManger.black),
+                    style:
+                        AppTextStyles.buttonName(16.sp, ColorsManger.black),
                   ),
                   SizedBox(height: 34.h),
                   SwitchToggle(),
@@ -131,11 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       UiUtils.showLoading(context);
-      UserCredential userCredential = await FirebaseService.login(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-     UserModel.currentUser = await FirebaseService.getUSerFromFIreStore(userCredential.user!.uid);
+      final user = await context.read<AuthCubit>().login(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
+      if (user == null) {
+        throw FirebaseAuthException(code: 'user-not-found');
+      }
+
       UiUtils.hideDialog(context);
       UiUtils.showMessage(
         message: "User Logged-In Successfully",

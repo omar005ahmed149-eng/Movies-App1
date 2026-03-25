@@ -40,7 +40,6 @@ class BottomSection extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 12),
           SizedBox(
             height: 200,
@@ -50,7 +49,11 @@ class BottomSection extends StatelessWidget {
               itemCount: movies.length,
               separatorBuilder: (_, __) => const SizedBox(width: 12),
               itemBuilder: (context, index) {
-                return CategoryCard( rating: movies[index].rating, poster_image: movies[index].poster_image);
+                return CategoryCard(
+                  rating: movies[index].rating,
+                  poster_image: movies[index].poster_image,
+                  movie: movies[index], // pass full movie for navigation
+                );
               },
             ),
           ),
