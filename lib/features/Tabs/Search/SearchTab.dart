@@ -82,7 +82,7 @@ class _SearchtabState extends State<Searchtab> {
                       return CategoryCard(
                         rating: filteredList[index].rating,
                         poster_image: filteredList[index].poster_image,
-                        movie: filteredList[index], // ← enables navigation
+                        movie: filteredList[index],
                       );
                     },
                   ),

@@ -9,8 +9,7 @@ import 'package:movies/core/resources/colors_manger.dart';
 import 'package:movies/features/movie_details/movie_details_screen.dart';
 
 class BottomSection extends StatelessWidget {
-  final int selectedTab; // 0 = Watch List, 1 = History
-
+  final int selectedTab;
   const BottomSection({super.key, required this.selectedTab});
 
   @override
@@ -22,7 +21,6 @@ class BottomSection extends StatelessWidget {
             : state.history;
 
         if (currentList.isEmpty) {
-          // FIX: popcorn image on empty state
           return Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -11,7 +11,7 @@ class Profiletab extends StatefulWidget {
 }
 
 class _ProfiletabState extends State<Profiletab> {
-  int selectedTab = 0; // 0 = Watch List, 1 = History
+  int selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +20,17 @@ class _ProfiletabState extends State<Profiletab> {
       body: SafeArea(
         child: Column(
           children: [
-            // Top section owns avatar, stats, buttons, tab bar
-            // It calls onTabChanged so ProfileTab can pass selectedTab to BottomSection
+
             TopSection(
               selectedTab: selectedTab,
               onTabChanged: (index) => setState(() => selectedTab = index),
             ),
 
-            // Divider
             Container(
               height: 1,
               color: const Color(0xFF2A2A2A),
             ),
 
-            // Bottom section renders the grid or empty state
             Expanded(
               child: BottomSection(selectedTab: selectedTab),
             ),

@@ -230,7 +230,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
             BlocBuilder<MoviesCubit, MoviesState>(
               builder: (context, _) {
-                // ── Selected avatar preview (NO edit circle badge) ───
+
                 return Center(
                   child: ClipOval(
                     child: SizedBox(
@@ -251,7 +251,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
             SizedBox(height: 24.h),
 
-            // ── Name field ────────────────────────────────────────
             _InputField(
               controller: _nameCtrl,
               hint: 'John Safwat',
@@ -260,7 +259,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
             SizedBox(height: 12.h),
 
-            // ── Phone field (FIX 5: max 11 digits) ───────────────
             _InputField(
               controller: _phoneCtrl,
               hint: '01200000000',
@@ -271,7 +269,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
                       SizedBox(height: 14.h),
 
-            // ── Reset Password ────────────────────────────────────
                       InkWell(
                         onTap: () =>
                             Navigator.pushNamed(context, RoutesManger.forgetPassProfile),
@@ -337,7 +334,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ),
               ),
 
-              // ── Delete Account button ─────────────────────────────
+
               SizedBox(
                 width: double.infinity,
                 height: 54.h,
@@ -365,7 +362,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
               SizedBox(height: 12.h),
 
-              // ── Update/Save button ───────────────────────────────
               SizedBox(
                 width: double.infinity,
                 height: 54.h,
@@ -401,7 +397,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
 }
 
-// ── Reusable Widgets ──────────────────────────────────────────────────────────
 
 class _InputField extends StatelessWidget {
   final TextEditingController controller;
@@ -428,7 +423,6 @@ class _InputField extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        // FIX 5: enforce max length via inputFormatters (no counter shown)
         inputFormatters: maxLength != null
             ? [LengthLimitingTextInputFormatter(maxLength)]
             : null,

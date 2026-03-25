@@ -15,7 +15,6 @@ class MovieDetailsScreen extends StatefulWidget {
 }
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
-  // ── Fake per-movie data ──────────────────────────────────────────
   static const Map<String, _MovieMeta> _meta = {
     '1917': _MovieMeta(year: '2019', likes: 18, duration: 119, rating: 8.3,
         summary:
@@ -55,7 +54,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             'The world is beset by the appearance of monstrous creatures, but one of them may be the only one who can prevent an extinction-level event.'),
   };
 
-  // Fake screenshot colors (simulate colored placeholder screenshots)
   static const List<Color> _screenshotColors = [
     Color(0xFF1A2A4A),
     Color(0xFF3A1A1A),
@@ -66,7 +64,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    // Add to history when user opens this screen
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MoviesCubit>().addToHistory(widget.movie);
     });
@@ -89,7 +86,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           backgroundColor: ColorsManger.black,
           body: CustomScrollView(
             slivers: [
-              // ── Hero Poster ──────────────────────────────────────
               SliverAppBar(
                 expandedHeight: 280.h,
                 pinned: true,
@@ -130,7 +126,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         widget.movie.poster_image,
                         fit: BoxFit.cover,
                       ),
-                      // Gradient overlay
                       Container(
                         decoration: const BoxDecoration(
                           gradient: LinearGradient(
@@ -146,7 +141,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           ),
                         ),
                       ),
-                      // Play button
                       Center(
                         child: Container(
                           width: 60.r,
@@ -179,7 +173,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                     children: [
                       SizedBox(height: 12.h),
 
-                      // ── Title & Year ──────────────────────────────
                       Text(
                         widget.movie.title,
                         style: TextStyle(
@@ -198,7 +191,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ),
                       SizedBox(height: 14.h),
 
-                      // ── Watch Button ──────────────────────────────
                       SizedBox(
                         width: double.infinity,
                         height: 46.h,
@@ -222,7 +214,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ),
                       SizedBox(height: 16.h),
 
-                      // ── Stats Row ─────────────────────────────────
                       Row(
                         children: [
                           _StatChip(
@@ -246,21 +237,18 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       ),
                       SizedBox(height: 24.h),
 
-                      // ── Screenshots ───────────────────────────────
                       _SectionTitle(title: 'Screen Shots'),
                       SizedBox(height: 12.h),
                       ..._buildScreenshots(context),
 
                       SizedBox(height: 24.h),
 
-                      // ── Similar ───────────────────────────────────
                       _SectionTitle(title: 'Similar'),
                       SizedBox(height: 12.h),
                       _SimilarMoviesGrid(currentMovie: widget.movie),
 
                       SizedBox(height: 24.h),
 
-                      // ── Summary ───────────────────────────────────
                       _SectionTitle(title: 'Summary'),
                       SizedBox(height: 8.h),
                       Text(
@@ -285,7 +273,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 
   List<Widget> _buildScreenshots(BuildContext context) {
-    // 3 fake screenshot placeholders with scene-like colors + icons
     final screenshots = [
       _ScreenshotData(color: const Color(0xFF0A1628), icon: Icons.location_city, label: 'City Chase'),
       _ScreenshotData(color: const Color(0xFF1A0A0A), icon: Icons.local_fire_department, label: 'Action Scene'),
@@ -323,7 +310,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   }
 }
 
-// ── Helper Widgets ────────────────────────────────────────────────────────────
 
 class _StatChip extends StatelessWidget {
   final IconData icon;
@@ -367,7 +353,6 @@ class _SimilarMoviesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Pick 4 movies that are not the current one
     final allMovies = _similarPool
         .where((m) => m['title'] != currentMovie.title)
         .take(4)
@@ -432,7 +417,6 @@ class _SimilarMoviesGrid extends StatelessWidget {
   ];
 }
 
-// ── Data Classes ──────────────────────────────────────────────────────────────
 
 class _MovieMeta {
   final String year;

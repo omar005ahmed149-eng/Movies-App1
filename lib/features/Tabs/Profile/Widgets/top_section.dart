@@ -28,7 +28,6 @@ class _TopSectionState extends State<TopSection> {
   @override
   void initState() {
     super.initState();
-    // Upper section owns profile-header data loading.
     context.read<MoviesCubit>().loadFromFirestore();
   }
 
@@ -40,7 +39,6 @@ class _TopSectionState extends State<TopSection> {
         final watchList = state.watchList;
         final history = state.history;
 
-        // Cubit poster takes priority, then Firebase value, then avatar1 default.
         final poster = state.selectedPoster.isNotEmpty
             ? state.selectedPoster
             : ((user?.poster.isNotEmpty ?? false)
@@ -50,7 +48,6 @@ class _TopSectionState extends State<TopSection> {
         return Column(
           children: [
 
-            // ── Avatar + Stats ───────────────────────────────────
             Padding(
               padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 0),
               child: Row(
@@ -58,7 +55,6 @@ class _TopSectionState extends State<TopSection> {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 25.w),
-                    // FIX: no yellow border on avatar
                     child: ClipOval(
                       child: SizedBox(
                         width: 80,
@@ -80,7 +76,6 @@ class _TopSectionState extends State<TopSection> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          // Live counters from MoviesCubit state.
                           StatItem(
                             count: watchList.length.toString(),
                             label: 'Wish List',
@@ -97,7 +92,6 @@ class _TopSectionState extends State<TopSection> {
               ),
             ),
 
-            // ── Name ─────────────────────────────────────────────
             Padding(
               padding: EdgeInsets.fromLTRB(30.w, 10.h, 20.w, 0),
               child: Align(
@@ -116,7 +110,6 @@ class _TopSectionState extends State<TopSection> {
 
             SizedBox(height: 18.h),
 
-            // ── Edit Profile + Exit buttons ──────────────────────
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
@@ -126,7 +119,6 @@ class _TopSectionState extends State<TopSection> {
                     child: SizedBox(
                       height: 46.h,
                       child: ElevatedButton(
-                        // FIX: navigate to UpdateProfile, NOT sign out
                         onPressed: () async {
                           await Navigator.pushNamed(
                               context, RoutesManger.updateProfile);
@@ -184,7 +176,7 @@ class _TopSectionState extends State<TopSection> {
 
             SizedBox(height: 20.h),
 
-            // ── Tab Bar ──────────────────────────────────────────
+
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(
@@ -231,7 +223,6 @@ class _TopSectionState extends State<TopSection> {
           TextButton(
             onPressed: () async {
               Navigator.pop(ctx);
-              // FIX: clear watchlist + history + poster on logout
               context.read<MoviesCubit>().clearAll();
               await context.read<AuthCubit>().logout();
               Navigator.pushNamedAndRemoveUntil(

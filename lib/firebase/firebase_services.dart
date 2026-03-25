@@ -36,8 +36,7 @@ class FirebaseService {
     return usersDocument.set(user);
   }
 
-  /// Returns the user from Firestore, or null if the document doesn't exist.
-  /// Never throws a null crash.
+
   static Future<UserModel?> getUSerFromFIreStore(String uid) async {
     try {
       CollectionReference<UserModel> usersCollection = getUsersCollection();
@@ -46,7 +45,6 @@ class FirebaseService {
       DocumentSnapshot<UserModel> documentSnapshot =
           await usersDocument.get();
 
-      // FIX: check exists before calling .data()
       if (!documentSnapshot.exists || documentSnapshot.data() == null) {
         return null;
       }

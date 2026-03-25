@@ -25,7 +25,6 @@ class HomeState {
     return HomeState(
       activeIndex: activeIndex ?? this.activeIndex,
       currentBg: currentBg ?? this.currentBg,
-      // prevBg: prevBg ?? this.prevBg,
     );
   }
 }
